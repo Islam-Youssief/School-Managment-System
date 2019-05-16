@@ -26,6 +26,7 @@ def register(request):
                 'islam.youssief@gmail.com', [student.email],
                 fail_silently=False,
             )
+        messages.info(request, 'Please Check Your Account In Order To Login !')
         return redirect('students:login')
 
 
