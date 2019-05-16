@@ -8,6 +8,7 @@ import random
 
 
 def register(request):
+    """ Register new account."""
     if request.method == "GET":
         return render(request, "students/register.html", context={'form': StudentForm()})
     else:
@@ -26,3 +27,34 @@ def register(request):
                 fail_silently=False,
             )
         return redirect('students:login')
+
+
+def login(request):
+    """ Login using username and password."""
+    if request.method == "GET":
+        return render(request, "students/login.html", context={'form': LoginForm()})
+    else:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            students = Student.objects.filter(username=form.cleaned_data['username'],
+                                              password=form.cleaned_data['password'])
+            if (students):
+                request.session['id'] = students[0].id
+                return redirect('courses:info')
+            else:
+                messages.error(request, 'username or password not correct')
+                return redirect('students:login')
+
+
+def logout(request):
+    """ Logout from the site."""
+    if "id" not in request.session:
+        return redirect('students:login')
+    del request.session['id']
+    return redirect('students:login')
+
+
+def generateEmailInfo(student):
+    """ Generate username and password which will be sent to the user."""
+    return(''.join(student.name[:4] + student.email[:4] + student.phone[:4] + str(random.randint(1, 101))),
+           ''.join(student.name[-4:] + student.email[-4:] + student.phone[-4:] + str(random.randint(1, 101))))
