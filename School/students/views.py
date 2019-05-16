@@ -8,7 +8,7 @@ import random
 
 
 def register(request):
-    """ Register new account."""
+    """ Register New User."""
     if request.method == "GET":
         return render(request, "students/register.html", context={'form': StudentForm()})
     else:
@@ -30,7 +30,7 @@ def register(request):
 
 
 def login(request):
-    """ Login using username and password."""
+    """ Login using email and passowrd sent by email"""
     if request.method == "GET":
         return render(request, "students/login.html", context={'form': LoginForm()})
     else:
@@ -47,7 +47,7 @@ def login(request):
 
 
 def logout(request):
-    """ Logout from the site."""
+    """ Logout and delete the session"""
     if "id" not in request.session:
         return redirect('students:login')
     del request.session['id']
@@ -55,6 +55,6 @@ def logout(request):
 
 
 def generateEmailInfo(student):
-    """ Generate username and password which will be sent to the user."""
+    """ Generate username and password sent by email"""
     return(''.join(student.name[:4] + student.email[:4] + student.phone[:4] + str(random.randint(1, 101))),
            ''.join(student.name[-4:] + student.email[-4:] + student.phone[-4:] + str(random.randint(1, 101))))

@@ -1,0 +1,180 @@
+{% extends "./layout.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% block style %}
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="{% static 'courses/images/favicon.ico' %}" />
+<!--===============================================================================================-->
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/bootstrap.min.css' %}">
+<!-- Owl Carousel -->
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/owl.theme.default.css' %}">
+<!-- Magnific Popup -->
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/magnific-popup.css' %}">
+<!-- Font Awesome Icon -->
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/font-awesome.min.css' %}">
+<!-- Custom stlylesheet -->
+<link rel="stylesheet" type="text/css" href="{% static 'courses/css/style.css' %}">
+<!--===============================================================================================-->
+{% endblock %}
+{% block content %}
+<!-- Header -->
+<header id="home">
+    <!-- Background Image -->
+    <div class="bg-img" style="background-image: url('{% static 'courses/images/background1.jpg' %}');">
+        <div class="overlay"></div>
+    </div>
+    <!-- /Background Image -->
+    <!-- Nav -->
+    <nav id="nav" class="navbar nav-transparent">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a href="enrolledcourses.html">
+                        <img class="logo" src='{% static "courses/images/logo.png" %}' alt="logo">
+                        <img class="logo-alt" src='{% static "courses/images/logo-alt.png" %}' alt="logo">
+                    </a>
+                </div>
+                <div class="navbar-brand">
+                    <nav class="navbar" style="padding-left: 25px;padding-top: 15px;" role="navigation" id="navbar">
+                        {% if "id" in request.session %}
+                        <a class="sh" href="{% url 'courses:info' %}">Show Subjects</a>
+                        <a class="sh" style="padding-left: 15px;" href="{% url 'students:logout' %}">Log Out</a>
+                        {% else %}
+                        <a class="sh" href="{% url 'students:login' %}">Log In</a>
+                        <a class="sh" href="{% url 'students:register' %}">Sign Up</a>
+                        {% endif %}
+                        <!-- /Logo -->
+                        <!-- Collapse nav button -->
+                        <div class="nav-collapse">
+                            <span></span>
+                        </div>
+                    </nav>
+                </div>
+                <!-- /Collapse nav button -->
+            </div>
+        </div>
+    </nav>
+    <!-- /Nav -->
+    <!-- home wrapper -->
+    <div class="home-wrapper">
+        <div class="container">
+            <div class="row">
+                <!-- home content -->
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="home-content">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                <h2> {{ message }}</h2>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <h2 class="white-text">These Are All The Avilable Courses</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Num.Days</th>
+                                    <th>Num.Hours</th>
+                                    <th>Starting Hour</th>
+                                    <th>Ending Hour</th>
+                                    <th>Content</th>
+                                    <th>Vacation</th>
+                                    <th>InstructorName</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cour in courses %}
+                                <tr>
+                                    <td>{{ cour.name }}</td>
+                                    <td> {{cour.days_needed}}</td>
+                                    <td>{{cour.hours_needed }}</td>
+                                    <th>{{cour.start_hour}}</th>
+                                    <th>{{cour.end_hour}}</th>
+                                    <td>{{cour.content }}</td>
+                                    <td> {{cour.vacation}}</td>
+                                    <td> {{cour.instructor_name }}</td>
+                                    {% if cour.reg %}
+                                    <td>
+                                        <a href="{% url 'courses:unregister' cour.id  %}" class="btn btn-primary">UnRegister</a>
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <a href="{% url 'courses:register' cour.id  %}" class="btn btn-primary">Register</a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <a href="http://127.0.0.1:8000/courses/sendmail"><button class="white-btn">Send Me A Reminder </button></a>
+                    </div>
+                </div>
+                <!-- /home content -->
+            </div>
+        </div>
+    </div>
+    <!-- /home wrapper -->
+</header>
+<!-- /Header -->
+<!-- Footer -->
+<footer id="footer" class="sm-padding bg-dark">
+    <!-- Container -->
+    <div class="container">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- footer logo -->
+                <div class="footer-logo">
+                    <a href="index.html"><img src='{% static "courses/images/logo-alt.png" %}' alt="logo"></a>
+                </div>
+                <!-- /footer logo -->
+                <!-- footer follow -->
+                <ul class="footer-follow">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                </ul>
+                <!-- /footer follow -->
+                <!-- footer copyright -->
+                <div class="footer-copyright">
+                    <p>Copyright © 2019. All Rights Reserved. Designed by <a href="https://github/islam-youssief" target="_blank">ISLAM</a></p>
+                </div>
+                <!-- /footer copyright -->
+            </div>
+        </div>
+        <!-- /Row -->
+    </div>
+    <!-- /Container -->
+</footer>
+<!-- /Footer -->
+<!-- Back to top -->
+<div id="back-to-top"></div>
+<!-- /Back to top -->
+<!-- Preloader -->
+<div id="preloader">
+    <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<!-- jQuery Plugins -->
+<script type="text/javascript" src="{% static 'courses/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'courses/js/jquery.magnific-popup.js' %}"></script>
+<script type="text/javascript" src="{% static 'courses/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'courses/js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'courses/js/main.js' %}"></script>
+{% endblock %}
